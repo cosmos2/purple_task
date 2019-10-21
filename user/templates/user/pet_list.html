@@ -1,0 +1,8 @@
+<h1>Pets</h1>
+<ul>
+{% for pet in object_list %}
+    <li>{{ pet.name }} => owner : {{ pet.owner.name }}</li>
+{% empty %}
+    <li>No  Pet</li>
+{% endfor %}
+</ul>
