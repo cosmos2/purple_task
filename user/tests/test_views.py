@@ -88,6 +88,66 @@ class TestCBViews:
         assert res_data['id'] == 1
 
     @pytest.mark.urls('purple.urls')
+    def test_api_pet_view_create(self, api_client):
+        user = mixer.blend(User, email='test@test.com')
+
+        response = api_client.post(
+            '/api/pets/',
+            {
+                'owner': 'test@test.com',
+                'name': 'mandoo'
+            },
+            format='json'
+            )
+
+        assert response.status_code == 201
+
+    @pytest.mark.urls('purple.urls')
+    def test_api_pet_view_update(self, api_client):
+        user = mixer.blend(User, email='test@test.com')
+
+        get_response = api_client.post(
+            '/api/pets/',
+            {
+                'owner': 'test@test.com',
+                'name': 'mandoo'
+            },
+            format='json'
+            )
+        
+        pet_pk = get_response.json()['id']
+
+        post_response = api_client.put(
+            f'/api/pets/{pet_pk}/',
+            {
+                'owner': 'test@test.com',
+                'name': 'king_mandoo'
+            },
+            format='json'
+            )
+
+        assert post_response.status_code == 200
+
+    @pytest.mark.urls('purple.urls')
+    def test_api_pet_view_delete(self, api_client):
+        user = mixer.blend(User, email='test@test.com')
+
+        get_response = api_client.post(
+            '/api/pets/',
+            {
+                'owner': 'test@test.com',
+                'name': 'mandoo'
+            },
+            format='json'
+            )
+        
+        pet_pk = get_response.json()['id']
+
+        del_response = api_client.delete(f'/api/pets/{pet_pk}/')
+
+        assert del_response.status_code == 204
+
+    @pytest.mark.urls('purple.urls')
     def test_user_list_view_called(self, client):
         users = mixer.cycle(5).blend(User)
         response = client.get('/users/')
