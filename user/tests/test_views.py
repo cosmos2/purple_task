@@ -294,7 +294,7 @@ class TestPetDetail:
         user = mixer.blend(User, email='mercury@space.com')
         pet = mixer.blend(Pet, id=153, owner=user)
 
-        response = client.delete('/users/153/', "{}")
-        check_res = client.get('/users/153/')
+        response = client.delete('/pets/153/', "{}")
+        check_res = client.get('/pets/153/')
 
         assert check_res.status_code == 404
