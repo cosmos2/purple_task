@@ -1,9 +1,11 @@
 import json
+
 from django.views.generic import ListView, DetailView
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
+
 from .models import User, Pet
 from .serializers import UserSerializer, PetSerializer
 
@@ -16,10 +18,14 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
-    filter_backends = [SearchFilter]
+    filter_backends = [SearchFilter]  # 반려동물 이름으로 찾을 수 있는 search field 추가
     search_fields = ['name']
 
     def get_queryset(self):
+        """
+        owner(소유자)와 rep(대표반려동물 여부)를 쿼리 스트링으로 구분하여 결과를 보여줌
+        """
+
         owner = self.request.query_params.get('owner', None)
 
         if owner:
@@ -44,7 +50,7 @@ class UserList(ListView):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         user = User.objects.create(**data)
-        return HttpResponse(user)
+        return redirect('user-detail', pk=user.email)
 
 
 class UserDetail(DetailView):
@@ -68,8 +74,11 @@ class PetList(ListView):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
+        data['owner'] = User.objects.get(email=data['owner'])
+
         pet = Pet.objects.create(**data)
-        return HttpResponse(pet)
+        pet.save()
+        return redirect('pet-detail', pk=pet.id)
 
 class PetDetail(DetailView):
     queryset = Pet.objects.all()

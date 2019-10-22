@@ -1,11 +1,13 @@
-import pytest
 import json
 from datetime import datetime
+
 from mixer.backend.django import mixer
+import pytest
+
 from user.models import User, Pet
 
 @pytest.mark.django_db
-class TestModel:
+class TestUserModel:
 
     def test_create_user(self):
         user = mixer.blend(
@@ -26,13 +28,9 @@ class TestModel:
         assert user.address_detail == 'King Sejong Station'
         assert user.role == 'SU'
 
-    def test_update_user(self):
-        user = mixer.blend(
-            User,
-            email='pengsoo@antarctic.com',
-            name='pengsoo'
-        )
-        
+
+@pytest.mark.django_db
+class TestPetModel:
 
     def test_create_pet(self):
         user = mixer.blend(User, email='pengsoo@.antarctic.com')
@@ -65,7 +63,10 @@ class TestModel:
         assert pet.representative == False
 
     def test_only_one_representative_pet(self):
+        """
+        대표 반려동물 1마리만 선택 테스트
+        """
         user = mixer.blend(User)
         with pytest.raises(Exception):
-            pet_1 = mixer.blend(Pet, owner=user, representative=True)
+            pet = mixer.blend(Pet, owner=user, representative=True)
             assert mixer.blend(Pet, owner=user, representative=True)

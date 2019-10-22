@@ -56,6 +56,9 @@ class Pet(models.Model):
     representative = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
+        """
+        대표 반려동물을 1마리만 선택할 수 있는 로직.
+        """
         pets = self.owner.pet_set.all()
 
         for pet in pets:
