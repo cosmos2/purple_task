@@ -57,6 +57,7 @@ jobs:
           command: |
             . venv/bin/activate
             pytest --cov=./user
+            codecov -- token='e4e28900-1f40-4844-8e01-8084831d145e'
 
       - store_artifacts:
           path: test-reports
