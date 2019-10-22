@@ -17,24 +17,24 @@ circleCI가 적용되어있고 codecov로 코드 커버리지를 확인 할 수 
 - 소프트웨어의 테스트가 얼마나 코드를 커버하고 있는지 알 수 있는 지표를 제공합니다.
 - CI와 함꼐 사용하면 코드를 PR하고 리포트를 바로 받아 볼 수 있습니다.
 
-## pytest
+### pytest
 - 테스트케이스 작성을 도와주는 도구입니다.
 - fixture 모듈과 플러그인을 통한 확장성이 장점입니다.
 - 해당 프로젝트에서는 `pytest-django`와 `pytest-cov`를 사용하여 pytest로 테스트케이스를 작성하였습니다.
 
-## virtualenv
+### virtualenv
 - 해당 프로젝트의 라이브러리, 모듈 등의 개발환경을 격리시키는 가상환경 도구입니다.
 
-## psycopg2
+### psycopg2
 - 파이썬에서 postgresql를 동작하게 도와주는 라이브러리 입니다.
 
-## django-restframework
+### django-restframework
 - django에서 REST API 제작을 편리하게 해주는 프레임워크입니다.
 
-## Werkzeug
+### Werkzeug
 - `django-extentions`의 `runserver_plus`의 디버깅 기능을 사용하기 위해 설치한 WSGI 라이브러리 입니다.
 
-## mixerr
+### mixerr
 - 장고 인스턴스를 쉽고 빠르게 생성해줍니다. 테스트 케이스 작성시 도움을 주는 라이브러리입니다.
 
 ## Authors
