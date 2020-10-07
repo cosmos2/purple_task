@@ -23,7 +23,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    working_directory: ~/repo
+    working_directory: ~/purple_task
 
     steps:
       - checkout
@@ -47,6 +47,9 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
+
+  test:
+    steps:
       # run tests!
       # this example uses Django's built-in test-runner
       # other common Python testing frameworks include pytest and nose
@@ -62,3 +65,26 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Deploy Over SSH
+          command: ssh ubuntu@ec2-54-180-82-56.ap-northeast-2.compute.amazonaws.com "./deploy.sh"
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - test:
+          reports:
+              - build
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
