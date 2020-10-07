@@ -68,7 +68,8 @@ jobs:
     steps:
       - run:
           name: Deploy Over SSH
-          command: ssh -i "~/.ssh/id_ubuntu" ubuntu@54.180.82.56 "./deploy.sh"
+          command: |
+            ssh $SSH_USER@$SSH_HOST ".deploy.sh"
 
 workflows:
   version: 2
